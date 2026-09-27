@@ -942,6 +942,10 @@ func captureThinkingPayload(t *testing.T, providerID, baseURL string, compat *Op
 	return reqBody
 }
 
+// TestStreamZaiThinkingPayload asserts the zai thinkingFormat wire shapes at
+// the provider layer: reasoning on sends {type:enabled,clear_thinking:false}
+// so Z.ai preserves replayed prior-turn reasoning_content, and reasoning off
+// sends {type:disabled} with no clear_thinking field.
 func TestStreamZaiThinkingPayload(t *testing.T) {
 	compat := &OpenAICompat{ThinkingFormat: "zai", MaxTokensField: "max_tokens"}
 	// reasoning on -> thinking:{type:enabled,clear_thinking:false}. Z.ai applies
