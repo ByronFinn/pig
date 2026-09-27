@@ -1369,7 +1369,10 @@ func (p *openAIProvider) Stream(ctx context.Context, transcript TranscriptContex
 		switch thinkingFormat {
 		case "zai":
 			if reasoningOn {
-				req.Thinking = map[string]any{"type": "enabled"}
+				// Z.ai applies clear_thinking:true by default server-side, dropping
+				// replayed prior-turn reasoning_content from the context; upstream
+				// opts out so preserved thinking keeps working.
+				req.Thinking = map[string]any{"type": "enabled", "clear_thinking": false}
 			} else {
 				req.Thinking = map[string]any{"type": "disabled"}
 			}
